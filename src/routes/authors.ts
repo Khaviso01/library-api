@@ -75,3 +75,32 @@ router.post('/', validateAuthor, (req: Request, res: Response) => {
   authors.push(newAuthor);
   res.status(201).json(newAuthor);
 });
+
+router.put('/:id', validateAuthor, (req: Request, res: Response) => {
+  const author = getAuthorById(req.params.id);
+  const { name, bio, birthYear } = req.body;
+
+  if (name !== undefined) author.name = name.trim();
+  if (bio !== undefined) author.bio = bio;
+  if (birthYear !== undefined) author.birthYear = birthYear;
+  author.updatedAt = new Date().toISOString();
+
+  res.status(200).json(author);
+});
+
+router.delete('/:id', (req: Request, res: Response) => {
+  const author = getAuthorById(req.params.id);
+
+  const hasBooks = books.some((b) => b.authorId === author.id);
+  if (hasBooks) {
+    throw new ConflictError(
+      'Cannot delete author: they still have books on record. Delete those books first.'
+    );
+  }
+
+  const index = authors.findIndex((a) => a.id === author.id);
+  authors.splice(index, 1);
+  res.status(204).send();
+});
+
+export default router;
