@@ -43,3 +43,11 @@ router.get('/', (req: Request, res: Response) => {
     res.status(200).json({ total, page: pageNum, limit: limitNum, data: result });
     return;
   }
+
+  res.status(200).json({ total, data: result });
+});
+
+router.get('/:id', (req: Request, res: Response) => {
+  const author = getAuthorById(req.params.id);
+  res.status(200).json(author);
+});
