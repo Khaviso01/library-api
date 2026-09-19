@@ -51,3 +51,27 @@ router.get('/:id', (req: Request, res: Response) => {
   const author = getAuthorById(req.params.id);
   res.status(200).json(author);
 });
+
+// GET /authors/:id/books - all books written by this author
+router.get('/:id/books', (req: Request, res: Response) => {
+  const author = getAuthorById(req.params.id);
+  const authorBooks = books.filter((b) => b.authorId === author.id);
+  res.status(200).json({ total: authorBooks.length, data: authorBooks });
+});
+
+router.post('/', validateAuthor, (req: Request, res: Response) => {
+  const { name, bio, birthYear } = req.body;
+  const now = new Date().toISOString();
+
+  const newAuthor: Author = {
+    id: randomUUID(),
+    name: name.trim(),
+    bio,
+    birthYear,
+    createdAt: now,
+    updatedAt: now,
+  };
+
+  authors.push(newAuthor);
+  res.status(201).json(newAuthor);
+});
