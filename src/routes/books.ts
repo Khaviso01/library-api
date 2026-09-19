@@ -14,3 +14,19 @@ function findBookOrFail(id: string): Book {
   }
   return book;
 }
+
+function assertAuthorExists(authorId: string): void {
+  const exists = authors.some((a) => a.id === authorId);
+  if (!exists) {
+    throw new ValidationError(`authorId "${authorId}" does not reference an existing author`);
+  }
+}
+
+function findDuplicate(title: string, authorId: string, excludeId?: string): Book | undefined {
+  return books.find(
+    (b) =>
+      b.id !== excludeId &&
+      b.authorId === authorId &&
+      b.title.trim().toLowerCase() === title.trim().toLowerCase()
+  );
+}
