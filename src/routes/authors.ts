@@ -33,3 +33,13 @@ router.get('/', (req: Request, res: Response) => {
       return a[sort] > b[sort] ? dir : a[sort] < b[sort] ? -dir : 0;
     });
   }
+
+  const total = result.length;
+  if (page || limit) {
+    const pageNum = Math.max(parseInt(String(page), 10) || 1, 1);
+    const limitNum = Math.max(parseInt(String(limit), 10) || 10, 1);
+    const start = (pageNum - 1) * limitNum;
+    result = result.slice(start, start + limitNum);
+    res.status(200).json({ total, page: pageNum, limit: limitNum, data: result });
+    return;
+  }
