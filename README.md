@@ -121,44 +121,6 @@ delete or reassign those books first.
 - **400 Bad Request** if `authorId` doesn't reference an existing author
 - **409 Conflict** if a book with the same title already exists for that author
 
-## Example Requests
-
-**Create an author**
-```bash
-curl -X POST http://localhost:3000/authors \
-  -H "Content-Type: application/json" \
-  -d '{"name": "George Orwell", "birthYear": 1903}'
-```
-
-**Create a book**
-```bash
-curl -X POST http://localhost:3000/books \
-  -H "Content-Type: application/json" \
-  -d '{"title": "1984", "authorId": "<author-id-from-above>", "year": 1949}'
-```
-
-**Search books by title, filter by year, sort, paginate**
-```bash
-curl "http://localhost:3000/books?title=animal&year=1945&sort=year&order=desc&page=1&limit=10"
-```
-
-**Get all books by an author**
-```bash
-curl http://localhost:3000/authors/<author-id>/books
-```
-
-**Update a book**
-```bash
-curl -X PUT http://localhost:3000/books/<book-id> \
-  -H "Content-Type: application/json" \
-  -d '{"genre": "Dystopian"}'
-```
-
-**Delete a book**
-```bash
-curl -X DELETE http://localhost:3000/books/<book-id>
-```
-
 ## Error Handling
 
 All errors are returned as JSON in the form `{ "error": "message" }`, with the appropriate
