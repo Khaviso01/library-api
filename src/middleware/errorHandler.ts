@@ -1,6 +1,10 @@
 import { Request, Response, NextFunction } from 'express';
 import { AppError } from '../utils/errors';
 
+export function notFoundHandler(req: Request, res: Response): void {
+  res.status(404).json({ error: `Route ${req.originalUrl} not found` });
+}
+
 export function errorHandler(
   err: unknown,
   req: Request,
