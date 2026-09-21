@@ -49,33 +49,17 @@ src/
     errors.ts            # AppError, ValidationError, NotFoundError, ConflictError
 ```
 
-## Data Models
 
-**Author**
 
-| Field     | Type   | Required | Notes                         |
-|-----------|--------|----------|--------------------------------|
-| id        | string | auto     | UUID, generated on create      |
-| name      | string | yes      | non-empty                      |
-| bio       | string | no       |                                 |
-| birthYear | number | no       | integer, `0`–current year      |
-| createdAt | string | auto     | ISO timestamp                  |
-| updatedAt | string | auto     | ISO timestamp                  |
+## Testing with Postman
 
-**Book**
-
-| Field     | Type   | Required | Notes                                     |
-|-----------|--------|----------|---------------------------------------------|
-| id        | string | auto     | UUID, generated on create                   |
-| title     | string | yes      | non-empty                                    |
-| authorId  | string | yes      | must reference an existing author            |
-| year      | number | no       | integer, `0`–current year                    |
-| genre     | string | no       |                                               |
-| isbn      | string | no       |                                               |
-| createdAt | string | auto     | ISO timestamp                                |
-| updatedAt | string | auto     | ISO timestamp                                |
-
-## Endpoints
+1. Start the server: `npm run dev`
+2. Create a Postman collection with variable `baseUrl` = `http://localhost:3000`
+3. `POST {{baseUrl}}/authors` — body: `{"name": "George Orwell", "birthYear": 1903}` → save returned `id`
+4. `POST {{baseUrl}}/books` — body: `{"title": "1984", "authorId": "<id>", "year": 1949}` → save returned `id`
+5. Test the rest: `GET`, `PUT`, `DELETE` on `/authors/:id` and `/books/:id`, plus `GET /authors/:id/books`
+6. Test filters: `GET /books?title=1984`, `?year=1949`, `?sort=year&order=desc`, `?page=1&limit=5`
+7. Test errors: missing fields → `400`, bad `authorId` → `400`, duplicate book → `409`, deleting author with books → `409`, unknown id → `404`## Endpoints
 
 ### Authors
 
@@ -142,20 +126,3 @@ HTTP status code:
 - **Error handling** (`src/middleware/errorHandler.ts`) — a 404 handler for unknown routes,
   and a centralized error handler that converts thrown `AppError`s into consistent JSON
   responses.
-
-## Testing with Postman
-
-1. Start the server: `npm run dev`
-2. Import a new collection in Postman with base URL `http://localhost:3000`
-3. Test the flow in this order so relationships resolve correctly:
-   1. `POST /authors` → copy the returned `id`
-   2. `POST /books` using that `id` as `authorId`
-   3. `GET /books`, `GET /authors/:id/books`, `PUT`, `DELETE` as needed
-4. Try invalid payloads (missing `name`/`title`, bad `authorId`, duplicate book, deleting an
-   author with books) to confirm the 400/404/409 responses.
-
-## Possible Next Steps
-
-- Swap the in-memory store for a real database (e.g., SQLite/Postgres via Prisma)
-- Add authentication for librarian-only write access
-- Add automated tests (Jest + Supertest)

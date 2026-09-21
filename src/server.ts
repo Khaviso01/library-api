@@ -1,10 +1,9 @@
-import app from './app'
+import app from './app';
 
-//Setting up default port for the server to listen to on default port 3000
-const PORT = process.env.PORT ? number(process.env.PORT);
-
+// setting up default port for the server to listen on, either from environment variable or defaulting to 3000
+const PORT = process.env.PORT ? Number(process.env.PORT) : 3000;
 
 // Listening to the server on the specified port
-app.listen(PORT,() => {
-    console.log(`Server is running on http://localhost:${PORT}`);
-})
+app.listen(PORT, () => {
+  console.log(`Server is running on http://localhost:${PORT}`);
+});

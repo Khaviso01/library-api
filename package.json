@@ -1,31 +1,20 @@
 {
   "name": "library-api",
-  "private": true,
-  "version": "0.0.0",
-  "type": "module",
+  "version": "1.0.0",
+  "description": "RESTful API for managing a library system (authors & books)",
+  "main": "dist/server.js",
   "scripts": {
-    "build": "tsc -b && vite build",
-    "lint": "oxlint",
-    "preview": "vite preview",
-    "start": "ts-node src/server.ts",
-    "dev": "nodemon --exec ts-node src/server.ts"
+    "build": "tsc",
+    "start": "node dist/server.js",
+    "dev": "ts-node-dev --respawn --transpile-only src/server.ts"
   },
   "dependencies": {
-    "@types/express": "^5.0.6",
-    "body-parser": "^2.3.0",
-    "express": "^5.2.1",
-    "react": "^19.2.8",
-    "react-dom": "^19.2.8",
-    "ts-node": "^10.9.2"
+    "express": "^4.19.2"
   },
   "devDependencies": {
-    "@types/node": "^24.13.5",
-    "@types/react": "^19.2.18",
-    "@types/react-dom": "^19.2.7",
-    "@vitejs/plugin-react": "^6.1.1",
-    "nodemon": "^3.1.14",
-    "oxlint": "^1.81.0",
-    "typescript": "~6.0.2",
-    "vite": "^8.3.0"
+    "@types/express": "^4.17.21",
+    "@types/node": "^20.14.9",
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^5.5.3"
   }
 }
